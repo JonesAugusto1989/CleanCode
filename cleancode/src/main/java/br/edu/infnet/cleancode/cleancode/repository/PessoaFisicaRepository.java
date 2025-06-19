@@ -10,6 +10,6 @@ import br.edu.infnet.cleancode.cleancode.model.entity.PessoaFisica;
 @Repository
 public interface PessoaFisicaRepository extends JpaRepository<PessoaFisica, Long>{
 	
-	public Optional<PessoaFisica> findByCpf(String cep);
+	public Optional<PessoaFisica> findByCpf(String cpf);
 
 }

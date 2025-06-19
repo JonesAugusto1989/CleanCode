@@ -45,20 +45,20 @@ public class Address {
 		this.cep = cep;
 	}
 
-	public Address(long id, String logradouro, String complemento, String unidade, String bairro, String localidade,
-			String uf, String estado, String regiao) {
-		super();
-		this.id = id;
-		this.logradouro = logradouro;
-		this.complemento = complemento;
-		this.unidade = unidade;
-		this.bairro = bairro;
-		this.localidade = localidade;
-		this.uf = uf;
-		this.estado = estado;
-		this.regiao = regiao;
+	
+	public Address(Builder builder) {
+		
+		this.cep = builder.cep;
+		this.logradouro = builder.logradouro;
+		this.complemento = builder.complemento;
+		this.unidade = builder.unidade;
+		this.bairro = builder.bairro;
+		this.localidade = builder.localidade;
+		this.uf = builder.uf;
+		this.estado = builder.estado;
+		this.regiao = builder.regiao;
 	}
-
+	
 	public Address() {
 		
 	}
@@ -142,6 +142,66 @@ public class Address {
 				+ ", regiao=" + regiao + "]";
 	}
 	
+	public static class Builder{
+				
+		private String cep;		
+		private String logradouro;
+		private String complemento;	
+		private String unidade;		
+		private String bairro;		
+		private String localidade;		
+		private String uf;		
+		private String estado;	
+		private String regiao;
+				
 
+	public Builder cep(String cep) {
+		this.cep = cep;
+		return this;
+	}
+
+	public Builder logradouro(String logradouro) {
+		this.logradouro = logradouro;
+		return this;
+	}
 	
+	public Builder complemento(String complemento) {
+		this.complemento = complemento;
+		return this;
+	}
+	
+	
+	public Builder unidade(String unidade) {
+		this.unidade = unidade;
+		return this;
+	}
+	
+	public Builder bairro(String bairro) {
+		this.bairro = bairro;
+		return this;
+	}
+	
+	public Builder localidade(String localidade) {
+		this.localidade = localidade;
+		return this;
+	}
+	
+	public Builder uf( String uf) {
+		this.uf = uf;
+		return this;
+	}
+	
+	public Builder estado(String estado) {
+		this.estado = estado;
+		return this;
+	}
+	
+	public Builder regiao(String regiao) {
+		this.regiao = regiao;
+		return this;
+	}
+	public Address build() {
+        return new Address(this);
+    }
+	}
 }

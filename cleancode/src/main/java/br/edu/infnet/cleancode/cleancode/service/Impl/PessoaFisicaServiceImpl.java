@@ -81,4 +81,23 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
 		
 		return pessoaFound;
 	}
+
+	private PessoaFisica pessoaFisicaIsPresent(String cpf) {
+		PessoaFisica pessoaFound = pessoafisicaRepository.findByCpf(cpf).orElseThrow((() -> new UserNotFound("Não encontrada pessoa fisica com o {}"+cpf)));
+		
+		return pessoaFound;
+	}
+
+	
+	@Override
+	public PessoaFisica findByCpf(String cpf) {
+		
+		Optional<PessoaFisica> pessoaFound = pessoafisicaRepository.findByCpf(cpf);
+		
+		if(pessoaFound.isEmpty()) {
+			throw new UserNotFound("Não encontrada pessoa fisica com o id: " + cpf);
+		}
+		
+		return pessoaFound.get();
+	}
 }
