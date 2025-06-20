@@ -4,6 +4,9 @@ package br.edu.infnet.cleancode.cleancode.model.entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +27,7 @@ public abstract class User {
 	private String name;
 	
 	@OneToMany(mappedBy = "user")
+	@Cascade(CascadeType.ALL)
 	private List<Address> address;
 	
 	//private List<Apolice> apolices;
@@ -81,5 +85,5 @@ public abstract class User {
 //		this.apolices = apolices;
 //	}
 
-
+    protected abstract void validarDados();
 }

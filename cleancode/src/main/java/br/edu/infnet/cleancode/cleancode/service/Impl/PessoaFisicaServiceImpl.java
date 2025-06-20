@@ -1,13 +1,17 @@
 package br.edu.infnet.cleancode.cleancode.service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.edu.infnet.cleancode.cleancode.API.AddressClient;
 import br.edu.infnet.cleancode.cleancode.exceptions.UserNotFound;
 import br.edu.infnet.cleancode.cleancode.model.dto.PessoaFisicaDTO;
+import br.edu.infnet.cleancode.cleancode.model.dto.PessoaFisicaRegisterDTO;
+import br.edu.infnet.cleancode.cleancode.model.entity.Address;
 import br.edu.infnet.cleancode.cleancode.model.entity.PessoaFisica;
 import br.edu.infnet.cleancode.cleancode.repository.PessoaFisicaRepository;
 import br.edu.infnet.cleancode.cleancode.service.PessoaFisicaService;
@@ -21,11 +25,15 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
 	@Autowired
 	private final PessoaFisicaRepository pessoafisicaRepository;
 	
+	@Autowired
+	private final AddressClient addressClient;
+	
 	
 
-	public PessoaFisicaServiceImpl(PessoaFisicaRepository pessoafisicaRepository) {
+	public PessoaFisicaServiceImpl(PessoaFisicaRepository pessoafisicaRepository, AddressClient addressClient) {
 	
 		this.pessoafisicaRepository = pessoafisicaRepository;
+		this.addressClient = addressClient;
 	
 	}
 
@@ -35,12 +43,31 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
 		return personList;
 	}
 	
-	public PessoaFisica savePessoaFisica(PessoaFisica pessoa) {
+	public PessoaFisica savePessoaFisica(PessoaFisicaRegisterDTO pessoaFisicaRegisterDTO) {
 		
+		String cep = pessoaFisicaRegisterDTO.cep();
+		System.out.println(pessoaFisicaRegisterDTO);
+		PessoaFisica pessoa = new PessoaFisica();
+		
+		pessoa.setName(pessoaFisicaRegisterDTO.name());
+		pessoa.setCpf(pessoaFisicaRegisterDTO.cpf());
+				
+		List<Address> addressList = new ArrayList<Address>();
+		
+		
+		
+		Address address = addressClient.obterPorCep(cep);		
+		address.setComplemento(pessoaFisicaRegisterDTO.complemento());
+		address.setUnidade(pessoaFisicaRegisterDTO.unidade());
+		address.setUser(pessoa);
+		addressList.add(address);	
+		pessoa.setAddress(addressList);	
 		pessoafisicaRepository.save(pessoa);	
 		return pessoa;
 		
 	}
+	
+
 
 	@Override
 	public Optional<PessoaFisica> findById(Long id) {

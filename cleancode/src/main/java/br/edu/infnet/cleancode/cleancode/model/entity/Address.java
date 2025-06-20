@@ -1,5 +1,7 @@
 package br.edu.infnet.cleancode.cleancode.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,6 +35,7 @@ public class Address {
 	private String regiao;
 	
 	@ManyToOne
+	@JsonBackReference
 	private User user;
 	
 	
@@ -133,6 +136,14 @@ public class Address {
 
 	public void setRegiao(String regiao) {
 		this.regiao = regiao;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
