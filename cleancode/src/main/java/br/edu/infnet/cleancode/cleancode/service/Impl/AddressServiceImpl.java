@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.infnet.cleancode.cleancode.API.AddressClient;
+import br.edu.infnet.cleancode.cleancode.adapter.AddressAdapterInterface;
 import br.edu.infnet.cleancode.cleancode.exceptions.AddressNotFound;
-import br.edu.infnet.cleancode.cleancode.exceptions.UserNotFound;
+import br.edu.infnet.cleancode.cleancode.model.dto.AddressDTO;
+import br.edu.infnet.cleancode.cleancode.model.dto.ComplementoUnidade;
 import br.edu.infnet.cleancode.cleancode.model.entity.Address;
-import br.edu.infnet.cleancode.cleancode.model.entity.PessoaFisica;
 import br.edu.infnet.cleancode.cleancode.repository.AddressRepository;
 import br.edu.infnet.cleancode.cleancode.service.AddressService;
 
@@ -18,11 +19,20 @@ import br.edu.infnet.cleancode.cleancode.service.AddressService;
 public class AddressServiceImpl implements AddressService{
 
 	@Autowired
-	private AddressClient addressClient;
+	private final AddressClient addressClient;
+	
+	@Autowired
+	private final AddressAdapterInterface addressAdapter;
 	
 	
 	@Autowired
 	private final AddressRepository addressRepository;
+	
+	public AddressServiceImpl(AddressRepository addressRepository, AddressAdapterInterface addressAdapter,AddressClient addressClient) {
+	    this.addressRepository = addressRepository;
+	    this.addressAdapter = addressAdapter;
+	    this.addressClient = addressClient;
+	}
 	
 	
 	public List<Address> findAll() {
@@ -30,23 +40,18 @@ public class AddressServiceImpl implements AddressService{
 		return addressList;
 	}
 	
-	public Address saveAddress(String cep) {
+
+	
+	
+	public Address obterPorCep(String cep,ComplementoUnidade complementoUnidade) {
 		
-		Address address = addressClient.obterPorCep(cep);
-		
-		addressRepository.save(address);
-		return address;
+	    AddressDTO addressDTO = addressClient.obterPorCep(cep);
+	    
+        return addressAdapter.dtoConvertEntity(addressDTO, complementoUnidade);
 	}
 	
-	
-	
-	public AddressServiceImpl(AddressRepository addressRepository) {
-		this.addressRepository = addressRepository;
-	}
-	
-	public Address obterPorCep(String cep) {
-		return addressClient.obterPorCep(cep);
-	}
+ 
+
 
 	@Override
 	public Address findByCep(String cep) {
