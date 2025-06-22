@@ -5,7 +5,6 @@ import br.edu.infnet.cleancode.cleancode.model.entity.Address;
 
 public interface AddressService {
 
-	
 	Address findByCep(String cep);
 
 	Address obterPorCep(String cep, ComplementoUnidade complementoUnidade);
